@@ -1,0 +1,83 @@
+{
+  "project_info": {
+    "project_number": "275250336556",
+    "firebase_url": "https://stusfirebaseproject-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "stusfirebaseproject",
+    "storage_bucket": "stusfirebaseproject.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275250336556:android:2a51cb84d9109fdf915289",
+        "android_client_info": {
+          "package_name": "com.stusapps.find_my_tribe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275250336556-q35t34rbbs5prvgu7fjmoh2gclgafgs4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsk9a5_8rE7smwZxECNVXMIIoA3R9FJ44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275250336556-q35t34rbbs5prvgu7fjmoh2gclgafgs4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "275250336556-pjg5c751l5plud759ih2ddgr7351u613.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stusapps.findMyTribe"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:275250336556:android:ef12613cfa45251a915289",
+        "android_client_info": {
+          "package_name": "com.stusapps.findmytribe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "275250336556-q35t34rbbs5prvgu7fjmoh2gclgafgs4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsk9a5_8rE7smwZxECNVXMIIoA3R9FJ44"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "275250336556-q35t34rbbs5prvgu7fjmoh2gclgafgs4.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "275250336556-pjg5c751l5plud759ih2ddgr7351u613.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.stusapps.findMyTribe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

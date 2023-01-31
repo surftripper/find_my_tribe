@@ -1,0 +1,32 @@
+{
+  "memberlocations": {
+    "benkelly2012@outlook-com": {
+      "lastupdated": 1674832228381244,
+      "lat": 123.4,
+      "long": 234.2
+    },
+    "stu-kelly@outlook-com": {
+      "lastupdated": 1674832354641748,
+      "lat": 923.4,
+      "long": 234.2
+    }
+  },
+  "tribes": {
+    "kelly-family": {
+      "members": {
+        "stu-kelly@outlook-com": true,
+        "benkelly2012@outlook-com": true,
+        "kath-kelly@outlook-com": true,
+        "ekfairy@outlook-com": true
+      }
+    },
+    "ltb-mtb-tribe": {
+      "members": {
+        "stu-kelly@outlook-com": true,
+        "benkelly2012@outlook-com": true,
+        "kath-kelly@outlook-com": true,
+        "ekfairy@outlook-com": true
+      }
+    }
+  }
+}
