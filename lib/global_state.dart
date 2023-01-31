@@ -14,7 +14,7 @@ class GlobalState extends ChangeNotifier {
   //UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
 
   /// The users's ID which will be their unique identifier.
-  String myId = "benkelly2012@outlook-com";
+  String myId = "stu-kelly@outlook-com";
   String myTribe = "kelly-family";
 
   List<String> listTribes() {

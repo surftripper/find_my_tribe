@@ -28,6 +28,7 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
+  Set<Marker> mapMarkers = {};
   List<MemberLocation> memberLocations = [];
   final database = FirebaseDatabase.instance.ref();
   late StreamSubscription _memberLocationsStream;
@@ -42,7 +43,7 @@ class _MapPageState extends State<MapPage> {
   final Completer<GoogleMapController> _controller =
       Completer<GoogleMapController>();
 
-  static const CameraPosition _kGooglePlex = CameraPosition(
+  static const CameraPosition _initalMapStartingPos = CameraPosition(
     target: LatLng(0.0, 0.0),
     zoom: 256,
   );
@@ -57,10 +58,23 @@ class _MapPageState extends State<MapPage> {
   @override
   void initState() {
     super.initState();
+    //_setUpMarkers(); //must move to afer have member locatosn
     _activateRTDBListeners();
     _activateGeoLocatorListner();
     getCurrentLocation();
   }
+
+  /*  void _setUpMarkers() {
+    mapMarkers.add(Marker(
+      markerId: MarkerId('unique1'),
+      position: LatLng(41.4617533, -2.90688174), //position of marker
+      infoWindow: InfoWindow(
+        title: 'Marker Title First ',
+        snippet: 'My Custom Subtitle',
+      ),
+      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+    ));
+  } */
 
   void getCurrentLocation() async {
     checkLocationPermissions();
@@ -83,10 +97,23 @@ class _MapPageState extends State<MapPage> {
 
       setState(() {
         //1. Retrieve the Changed Member Locations from the database
+        // and update the map marker set
         memberLocations.clear();
+        mapMarkers.clear();
         data.forEach((key, value) {
           Map<dynamic, dynamic> innerRecord = value;
-          memberLocations.add(MemberLocation.fromRTDB(key, innerRecord));
+          MemberLocation _loc = MemberLocation.fromRTDB(key, innerRecord);
+          memberLocations.add(_loc);
+          mapMarkers.add(Marker(
+            markerId: MarkerId(key),
+            position: LatLng(_loc.lat, _loc.long), //position of marker
+            infoWindow: InfoWindow(
+              title: key,
+              snippet: DateTime.fromMicrosecondsSinceEpoch(_loc.lastUpdated)
+                  .toString(),
+            ),
+            icon: BitmapDescriptor.defaultMarker,
+          ));
         });
       });
     });
@@ -112,7 +139,7 @@ class _MapPageState extends State<MapPage> {
   Future<void> moveToPosition(Position position) async {
     final GoogleMapController controller = await _controller.future;
     LatLng latLng = LatLng(position.latitude, position.longitude);
-    CameraPosition cameraPosition = CameraPosition(target: latLng, zoom: 14);
+    CameraPosition cameraPosition = CameraPosition(target: latLng, zoom: 15);
     controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
     //controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
@@ -181,6 +208,8 @@ class _MapPageState extends State<MapPage> {
         desiredAccuracy: LocationAccuracy.high);
   }
 
+  void _addMarker() {}
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called
@@ -188,42 +217,56 @@ class _MapPageState extends State<MapPage> {
     //var myId = Provider.of<GlobalState>(context, listen: false).myId;
 
     return Scaffold(
-      appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: GoogleMap(
-        mapType: MapType.hybrid,
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
-      // child: Column(
-      //   mainAxisAlignment: MainAxisAlignment.center,
-      //   children: <Widget>[
-      //     const Text(
-      //       'Your Tribe Locations:',
-      //     ),
+        appBar: AppBar(
+          // Here we take the value from the MyHomePage object that was created by
+          // the App.build method, and use it to set our appbar title.
+          title: Text(widget.title),
+        ),
+        body: Stack(children: [
+          GoogleMap(
+            mapType: MapType.normal,
+            initialCameraPosition: _initalMapStartingPos,
+            onMapCreated: (GoogleMapController controller) {
+              _controller.complete(controller);
+            },
+            myLocationEnabled: true,
+            markers: mapMarkers,
+          ),
+          Positioned(
+            bottom: 50,
+            left: 10,
+            child: FloatingActionButton(
+              child: Icon(Icons.pin_drop, color: Colors.white),
+              backgroundColor: Colors.green,
+              onPressed: (null),
+            ),
+          )
+        ])
 
-      //     Text(
-      //       myId,
-      //       style: Theme.of(context).textTheme.headline4,
-      //     ),
-      //     Text(
-      //       _position != null ? _position.toString() : 'No location',
-      //     ),
-      //     for (var item in memberLocations) Text(item.toString()),
-      //   ],
-      // ),
+        // child: Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: <Widget>[
+        //     const Text(
+        //       'Your Tribe Locations:',
+        //     ),
 
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: const Icon(Icons.map),
-      // ), // This trailing comma makes auto-formatting nicer for build methods.
-    );
+        //     Text(
+        //       myId,
+        //       style: Theme.of(context).textTheme.headline4,
+        //     ),
+        //     Text(
+        //       _position != null ? _position.toString() : 'No location',
+        //     ),
+        //     for (var item in memberLocations) Text(item.toString()),
+        //   ],
+        // ),
+
+        // floatingActionButton: FloatingActionButton(
+        //   onPressed: _incrementCounter,
+        //   tooltip: 'Increment',
+        //   child: const Icon(Icons.map),
+        // ), // This trailing comma makes auto-formatting nicer for build methods.
+        );
   }
 
   @override
