@@ -14,7 +14,7 @@ class GlobalState extends ChangeNotifier {
   //UnmodifiableListView<Item> get items => UnmodifiableListView(_items);
 
   /// The users's ID which will be their unique identifier.
-  String myId = "stu-kelly@outlook-com";
+  String myId = "ekfairy@outlook-com";
   String myTribe = "kelly-family";
 
   List<String> listTribes() {
@@ -24,7 +24,7 @@ class GlobalState extends ChangeNotifier {
   /// Adds [item] to cart. This and [removeAll] are the only ways to modify the
   /// cart from the outside.
   // void add(Item item) {
-  //   _items.add(item);
+  //   _items.add(item);Great
   //   // This call tells the widgets that are listening to this model to rebuild.
   //   notifyListeners();
   // }

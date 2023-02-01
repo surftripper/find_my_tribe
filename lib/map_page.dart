@@ -36,7 +36,7 @@ class _MapPageState extends State<MapPage> {
   Position? _position;
   final LocationSettings locationSettings = LocationSettings(
     accuracy: LocationAccuracy.high,
-    distanceFilter: 100,
+    distanceFilter: 10,
   );
 
 //--------------MAP

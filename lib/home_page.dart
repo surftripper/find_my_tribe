@@ -1,6 +1,8 @@
 import 'package:find_my_tribe/tribe_page.dart';
 import 'package:find_my_tribe/map_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:find_my_tribe/global_state.dart';
 
 //---------------------------------------------------------------------
 class HomePage extends StatefulWidget {
@@ -24,15 +26,13 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  void dropdownCallback(String? selectedValue) {
+    if (selectedValue is String) {
+      setState(() {
+        Provider.of<GlobalState>(context, listen: false).myId = selectedValue;
+        print(selectedValue);
+      });
+    }
   }
 
   @override
@@ -69,15 +69,27 @@ class _HomePageState extends State<HomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            DropdownButton(
+              items: const [
+                DropdownMenuItem(
+                  child: Text('ekfairy@outlook-com'),
+                  value: 'ekfairy@outlook-com',
+                ),
+                DropdownMenuItem(
+                  child: Text('stu-kelly@outlook-com'),
+                  value: 'stu-kelly@outlook-com',
+                ),
+              ],
+              //value: 'ekfairy@outlook-com',
+              onChanged: dropdownCallback,
+              iconSize: 42.0,
+              iconEnabledColor: Colors.blue,
+            ),
             const Text(
               'Choose an action:',
             ),
             SizedBox(width: 10, height: 10),
-            ElevatedButton(
-              onPressed: _incrementCounter,
-              child: const Text('Your details'),
-            ), // This trailing comma makes auto-formatting nicer for build methods.('hi')
-            SizedBox(width: 10, height: 10),
+
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
