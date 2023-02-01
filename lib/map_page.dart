@@ -34,6 +34,7 @@ class _MapPageState extends State<MapPage> {
   late StreamSubscription _memberLocationsStream;
   late StreamSubscription<Position> _positionStream;
   Position? _position;
+  double lastKnownZoom = 14;
   final LocationSettings locationSettings = LocationSettings(
     accuracy: LocationAccuracy.high,
     distanceFilter: 10,
@@ -75,6 +76,9 @@ class _MapPageState extends State<MapPage> {
       icon: BitmapDescriptor.defaultMarker, //Icon for Marker
     ));
   } */
+  void _onCameraMovement(CameraPosition camPosition) {
+    lastKnownZoom = camPosition.zoom;
+  }
 
   void getCurrentLocation() async {
     checkLocationPermissions();
@@ -139,7 +143,8 @@ class _MapPageState extends State<MapPage> {
   Future<void> moveToPosition(Position position) async {
     final GoogleMapController controller = await _controller.future;
     LatLng latLng = LatLng(position.latitude, position.longitude);
-    CameraPosition cameraPosition = CameraPosition(target: latLng, zoom: 15);
+    CameraPosition cameraPosition =
+        CameraPosition(target: latLng, zoom: lastKnownZoom);
     controller.moveCamera(CameraUpdate.newCameraPosition(cameraPosition));
     //controller.animateCamera(CameraUpdate.newCameraPosition(_kLake));
   }
@@ -229,6 +234,7 @@ class _MapPageState extends State<MapPage> {
             onMapCreated: (GoogleMapController controller) {
               _controller.complete(controller);
             },
+            onCameraMove: _onCameraMovement,
             myLocationEnabled: true,
             markers: mapMarkers,
           ),

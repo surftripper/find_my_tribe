@@ -26,11 +26,24 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _counter = 0;
 
+  List<DropdownMenuItem<String>> getDropdownItems() {
+    List<DropdownMenuItem<String>> mylist = [];
+    List<String> mystrings =
+        Provider.of<GlobalState>(context, listen: false).listTribes();
+
+    for (String str in mystrings) {
+      var myitem = DropdownMenuItem<String>(value: str, child: Text(str));
+      mylist.add(myitem);
+    }
+
+    return mylist;
+  }
+
   void dropdownCallback(String? selectedValue) {
     if (selectedValue is String) {
       setState(() {
         Provider.of<GlobalState>(context, listen: false).myId = selectedValue;
-        print(selectedValue);
+        //print(selectedValue);
       });
     }
   }
@@ -69,25 +82,13 @@ class _HomePageState extends State<HomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            DropdownButton(
-              items: const [
-                DropdownMenuItem(
-                  child: Text('ekfairy@outlook-com'),
-                  value: 'ekfairy@outlook-com',
-                ),
-                DropdownMenuItem(
-                  child: Text('stu-kelly@outlook-com'),
-                  value: 'stu-kelly@outlook-com',
-                ),
-              ],
-              //value: 'ekfairy@outlook-com',
-              onChanged: dropdownCallback,
-              iconSize: 42.0,
-              iconEnabledColor: Colors.blue,
-            ),
-            const Text(
-              'Choose an action:',
-            ),
+            DropdownButton<String>(
+                items: getDropdownItems(),
+                value: Provider.of<GlobalState>(context, listen: false).myId,
+                onChanged: dropdownCallback,
+                iconSize: 42.0,
+                iconEnabledColor: Colors.blue),
+
             SizedBox(width: 10, height: 10),
 
             ElevatedButton(
