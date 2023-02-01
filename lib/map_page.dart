@@ -88,6 +88,8 @@ class _MapPageState extends State<MapPage> {
         _position = position;
         updateRTDBwithLocation(position);
         moveToPosition(position);
+      } else {
+        print('*******CANT FIND YOU');
       }
     });
   }
@@ -219,8 +221,6 @@ class _MapPageState extends State<MapPage> {
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called
 
-    //var myId = Provider.of<GlobalState>(context, listen: false).myId;
-
     return Scaffold(
         appBar: AppBar(
           // Here we take the value from the MyHomePage object that was created by
@@ -237,6 +237,16 @@ class _MapPageState extends State<MapPage> {
             onCameraMove: _onCameraMovement,
             myLocationEnabled: true,
             markers: mapMarkers,
+          ),
+          Flexible(
+            child: Text(Provider.of<GlobalState>(context, listen: false)
+                    .myId
+                    .toString() +
+                "\n" +
+                (_position != null
+                    ? _position.toString() + "\n"
+                    : 'No location') +
+                memberLocations.toString()),
           ),
           Positioned(
             bottom: 50,

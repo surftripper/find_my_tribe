@@ -6,6 +6,6 @@ class Tribe {
 
   // @override
   String toString() {
-    return "$name $members";
+    return "$name $members\n";
   }
 }

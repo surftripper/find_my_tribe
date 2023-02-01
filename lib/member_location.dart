@@ -29,6 +29,6 @@ class MemberLocation {
 
   // @override
   String toString() {
-    return "$memberId $lat $long ${DateTime.fromMicrosecondsSinceEpoch(lastUpdated)}";
+    return "$memberId $lat $long ${DateTime.fromMicrosecondsSinceEpoch(lastUpdated)}\n";
   }
 }
