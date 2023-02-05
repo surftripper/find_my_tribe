@@ -9,6 +9,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'member_location.dart';
 import 'tribe.dart';
+import 'package:flutter/foundation.dart';
 
 class MapPage extends StatefulWidget {
   //const MapPage({super.key, required this.title});
@@ -35,10 +36,49 @@ class _MapPageState extends State<MapPage> {
   late StreamSubscription<Position> _positionStream;
   Position? _position;
   double lastKnownZoom = 14;
-  final LocationSettings locationSettings = LocationSettings(
-    accuracy: LocationAccuracy.high,
-    distanceFilter: 10,
-  );
+  //------------------------------------------------------------
+  //CODE CHANGES FOR OFFLINE - COMMENTED OUT BELOW AND REPLACED
+  // final LocationSettings locationSettings = LocationSettings(
+  //   accuracy: LocationAccuracy.high,
+  //   distanceFilter: 10,
+  //   );
+  late LocationSettings locationSettings;
+
+  LocationSettings getLocationSettings() {
+    if (defaultTargetPlatform == TargetPlatform.android) {
+      return AndroidSettings(
+          accuracy: LocationAccuracy.high,
+          distanceFilter: 10,
+          forceLocationManager: true,
+          intervalDuration: const Duration(seconds: 10),
+          //(Optional) Set foreground notification config to keep the app alive
+          //when going to the background
+          foregroundNotificationConfig: const ForegroundNotificationConfig(
+            notificationText:
+                "Example app will continue to receive your location even when you aren't using it",
+            notificationTitle: "Running in Background",
+            enableWakeLock: true,
+          ));
+    } else if (defaultTargetPlatform == TargetPlatform.iOS ||
+        defaultTargetPlatform == TargetPlatform.macOS) {
+      return AppleSettings(
+        accuracy: LocationAccuracy.high,
+        activityType: ActivityType.fitness,
+        distanceFilter: 10,
+        pauseLocationUpdatesAutomatically: true,
+        // Only set to true if our app will be started up in the background.
+        showBackgroundLocationIndicator: false,
+      );
+    } else {
+      return LocationSettings(
+        accuracy: LocationAccuracy.high,
+        distanceFilter: 10,
+      );
+    }
+  }
+
+  //REPLACED WITH ABOVE
+//------------------------------------------------------------
 
 //--------------MAP
   final Completer<GoogleMapController> _controller =
@@ -49,33 +89,18 @@ class _MapPageState extends State<MapPage> {
     zoom: 256,
   );
 
-  // static const CameraPosition _kLake = CameraPosition(
-  //     bearing: 192.8334901395799,
-  //     target: LatLng(37.43296265331129, -122.08832357078792),
-  //     tilt: 59.440717697143555,
-  //     zoom: 19.151926040649414);
-//------------MAP
-
   @override
   void initState() {
     super.initState();
-    //_setUpMarkers(); //must move to afer have member locatosn
+    //------------------------------------------------------------
+    //CODE CHANGES FOR OFFLINE - ADDED LINE BELOW
+    locationSettings = getLocationSettings();
+    //------------------------------------------------------------
     _activateRTDBListeners();
     _activateGeoLocatorListner();
     getCurrentLocation();
   }
 
-  /*  void _setUpMarkers() {
-    mapMarkers.add(Marker(
-      markerId: MarkerId('unique1'),
-      position: LatLng(41.4617533, -2.90688174), //position of marker
-      infoWindow: InfoWindow(
-        title: 'Marker Title First ',
-        snippet: 'My Custom Subtitle',
-      ),
-      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-    ));
-  } */
   void _onCameraMovement(CameraPosition camPosition) {
     lastKnownZoom = camPosition.zoom;
   }
