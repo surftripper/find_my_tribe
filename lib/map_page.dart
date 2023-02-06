@@ -95,6 +95,8 @@ class _MapPageState extends State<MapPage> {
     //------------------------------------------------------------
     //CODE CHANGES FOR OFFLINE - ADDED LINE BELOW
     locationSettings = getLocationSettings();
+    //CODE CHANGES FOR BACKGROUND_FETCH
+    //TODO: _activatePlatformState();
     //------------------------------------------------------------
     _activateRTDBListeners();
     _activateGeoLocatorListner();
@@ -263,16 +265,13 @@ class _MapPageState extends State<MapPage> {
             myLocationEnabled: true,
             markers: mapMarkers,
           ),
-          Flexible(
-            child: Text(Provider.of<GlobalState>(context, listen: false)
-                    .myId
-                    .toString() +
-                "\n" +
-                (_position != null
-                    ? _position.toString() + "\n"
-                    : 'No location') +
-                memberLocations.toString()),
-          ),
+          Text(
+              Provider.of<GlobalState>(context, listen: false).myId.toString() +
+                  "\n" +
+                  (_position != null
+                      ? _position.toString() + "\n"
+                      : 'No location') +
+                  memberLocations.toString()),
           Positioned(
             bottom: 50,
             left: 10,
